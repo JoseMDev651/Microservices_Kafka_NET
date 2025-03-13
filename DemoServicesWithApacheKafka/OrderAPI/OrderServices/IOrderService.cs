@@ -17,8 +17,8 @@ namespace OrderAPI.OrderServices
     {
         private const string AddProductTopic = "add-product-topic";
         private const string DeleteProductTopic = "delete-product-topic";
-        public List<Product> Products { get; set; }
-        public List<Order> Orders { get; set; }
+        public List<Product> Products = [];
+        public List<Order> Orders = [];
 
         public async Task StartConsumingService()
         {
@@ -63,7 +63,11 @@ namespace OrderAPI.OrderServices
                 {
                     OrderId = order.Id,
                     ProductId = order.ProductId,
+                    ProductName = Products.FirstOrDefault(p => p.Id == order.ProductId)!.Name,
+                    ProductPrice = Products.FirstOrDefault(p => p.Price == order.ProductId)!.Price,
+                    OrderedQuantity = order.Quantity
                 });
+            return orderSummary;
         }
 
         public List<Product> GetProducts() => Products;
